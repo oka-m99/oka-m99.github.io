@@ -2,1117 +2,697 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2300f2ff'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-weight='bold' font-size='60' fill='%23020202'%3EM%3C/text%3E%3C/svg%3E">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2300f2ff'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-weight='bold' font-size='60' fill='%23020202'%3EM%3C/text%3E%3C/svg%3E">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maliq Oka | Full Stack Developer</title>
-    <meta name="theme-color" content="#00f2ff">
-    <meta name="description" content="Full Stack Developer specializing in WooCommerce, custom web experiences, and high-performance digital builds. Based in Berlin.">
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="https://unpkg.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Maliq Oka | 3D Immersive Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
-        :root { --accent: #00f2ff; --bg: #020202; }
-        body { 
-            background: 
-                radial-gradient(ellipse at 20% 20%, rgba(0,242,255,0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(255,184,0,0.02) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(192,132,252,0.02) 0%, transparent 50%),
-                linear-gradient(180deg, #020202 0%, #0a0a0f 50%, #020202 100%);
-            background-attachment: fixed;
-            color: #a1a1aa; font-family: 'Space Grotesk', sans-serif; line-height: 1.8; letter-spacing: 0.01em; overflow-x: hidden; scroll-behavior: smooth; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-
-        /* CURSOR - Only on non-touch devices */
-        @media (pointer: fine) {
-            body { cursor: none; }
-            #cur { position:fixed; width:8px; height:8px; background:var(--accent); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:screen; box-shadow: 0 0 10px var(--accent); }
-            a, button, .pcard, .fbtn, #sbtn { cursor: none; }
-            .code-trail {
-                position: fixed;
-                pointer-events: none;
-                z-index: 9998;
-                font-family: 'JetBrains Mono', monospace;
-                font-size: 10px;
-                color: var(--accent);
-                opacity: 0.8;
-                white-space: nowrap;
-                transform: translate(-50%, -50%);
-                text-shadow: 0 0 8px currentColor;
-                transition: opacity 0.5s ease;
-            }
-        }
-        @media (pointer: coarse) {
-            #cur { display: none !important; }
-            .code-trail { display: none !important; }
-            body { cursor: auto; }
-            a, button, .pcard, .fbtn, #sbtn { cursor: pointer; }
-        }
-
-        
-
-        .glass { 
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-
-        ::-webkit-scrollbar { width:4px; }
-        ::-webkit-scrollbar-thumb { background:var(--accent); border-radius:10px; }
-
-        .floating { animation:float 6s ease-in-out infinite; }
-        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
-
-        .reveal { opacity:0; transform:translateY(36px); transition:opacity .7s ease,transform .7s ease; }
-        .reveal.on { opacity:1; transform:none; }
-        .reveal-l { opacity:0; transform:translateX(-36px); transition:opacity .7s ease,transform .7s ease; }
-        .reveal-l.on { opacity:1; transform:none; }
-        .reveal-r { opacity:0; transform:translateX(36px); transition:opacity .7s ease,transform .7s ease; }
-        .reveal-r.on { opacity:1; transform:none; }
-
-        .hero-grad { background:linear-gradient(135deg,#fff 30%,var(--accent) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        #tw::after { content:'|'; animation:blink .7s infinite; color:var(--accent); }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-        .sbar { height:3px; background:rgba(255,255,255,0.07); border-radius:6px; overflow:hidden; }
-        .sfill { height:100%; background:linear-gradient(90deg,var(--accent),#007aff); border-radius:6px; width:0; transition:width 1.2s cubic-bezier(.4,0,.2,1); }
-
-        #toast { position:fixed; bottom:28px; right:28px; z-index:9999; display:flex; align-items:center; gap:12px; padding:14px 20px; border-radius:16px; background:rgba(10,10,10,0.95); border:1px solid rgba(255,255,255,0.1); backdrop-filter:blur(20px); min-width:240px; transform:translateY(80px); opacity:0; transition:all .4s cubic-bezier(.175,.885,.32,1.275); pointer-events:none; }
-        #toast.show { transform:translateY(0); opacity:1; }
-
-        #intro { position:fixed; inset:0; background:var(--bg); z-index:10000; display:flex; align-items:center; justify-content:center; transition:opacity .8s ease; }
-        #intro.out { opacity:0; pointer-events:none; }
-
-        /* PROJECT CARDS - Simplified, no image loading */
-        .pcard {
-            position: relative;
-            border-radius: 16px;
+        body {
+            margin: 0;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.03);
-            min-height: 140px;
-            transition: border-color .3s, box-shadow .3s, transform .3s;
-            display: flex;
-            flex-direction: column;
-            text-decoration: none;
-            padding: 20px;
+            background-color: #020210;
+            color: #e8e8ff;
+            font-family: 'Space Mono', monospace;
+            user-select: none;
         }
-        .pcard { will-change: transform; }
-        .pcard:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px) rotateX(2deg) rotateY(-2deg) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0,242,255,0.15);
-            background: rgba(0,242,255,0.05);
+        canvas {
+            display: block;
         }
-        .pcard-body {
-            position: relative;
-            z-index: 2;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* FILTER BUTTONS */
-        .fbtn {
-            padding: 7px 18px;
-            border-radius: 999px;
-            border: 1px solid rgba(255,255,255,0.12);
-            font-size: 10px;
-            letter-spacing: .18em;
-            font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase;
-            color: #9ca3af;
-            background: transparent;
-            transition: all .2s;
-            outline: none;
-        }
-        .fbtn:hover { border-color: rgba(0,242,255,.5); color: var(--accent); }
-        .fbtn.active { border-color: var(--accent); color: var(--accent); background: rgba(0,242,255,.08); }
-
-        .pcard[hidden] { display: none !important; }
-
-        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
-
-        
-        /* Category-colored left borders */
-        .pcard[data-tags*="woo"] { border-left: 2px solid #00f2ff; }
-        .pcard[data-tags*="corporate"] { border-left: 2px solid #ffb800; }
-        .pcard[data-tags*="nonprofit"] { border-left: 2px solid #ff6b6b; }
-        .pcard[data-tags*="staging"] { border-left: 2px solid #6b7280; }
-
-        /* Category tag colors */
-        .pcard[data-tags*="woo"] span { border-color: rgba(0,242,255,.3) !important; color: rgba(0,242,255,.7) !important; }
-        .pcard[data-tags*="corporate"] span { border-color: rgba(255,184,0,.3) !important; color: rgba(255,184,0,.7) !important; }
-        .pcard[data-tags*="nonprofit"] span { border-color: rgba(255,107,107,.3) !important; color: rgba(255,107,107,.7) !important; }
-        .pcard[data-tags*="staging"] span { border-color: rgba(107,114,128,.3) !important; color: rgba(107,114,128,.7) !important; }
-        /* Noise texture overlay */
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.035;
-            pointer-events: none;
-            z-index: -1;
-        }
-        /* Scroll progress bar */
-        #progress-bar {
+        #ui-layer {
             position: fixed;
             top: 0;
             left: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent), #ffb800);
-            width: 0%;
-            z-index: 10002;
-            transition: width 0.1s ease-out;
-            box-shadow: 0 0 10px var(--accent);
-        }
-        /* Mouse spotlight effect */
-        #spotlight {
-            position: fixed;
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, rgba(0,242,255,0.06) 0%, transparent 60%);
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            z-index: -1;
-            transform: translate(-50%, -50%);
-            transition: opacity 0.3s ease;
-            opacity: 0;
+            z-index: 10;
         }
-        body:hover #spotlight {
-            opacity: 1;
+        .hud-element {
+            pointer-events: auto;
+            position: absolute;
         }
-        
-        @keyframes meshMove {
-            0%, 100% { background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%; }
-            33% { background-position: 10% 10%, 90% 90%, 60% 40%, 0% 0%; }
-            66% { background-position: -10% -10%, 110% 110%, 40% 60%, 0% 0%; }
+        .glow-text {
+            text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff;
         }
-        body {
-            animation: meshMove 20s ease-in-out infinite;
+        .neon-border {
+            border: 1px solid #00f5ff;
+            box-shadow: 0 0 10px #00f5ff, inset 0 0 5px #00f5ff;
         }
-        /* Mobile nav improvements */
-        @media (max-width: 768px) {
-            nav { padding: 15px 20px !important; }
-            nav .mono { gap: 16px !important; }
-            nav a[href="#about"], nav a[href="#projects"] { display: none; }
-            #about, #contact { padding: 80px 20px !important; }
-            #about > div, #contact > div { grid-template-columns: 1fr !important; gap: 40px !important; }
-            #projects { padding: 60px 20px !important; }
+        #nav-dots {
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
         }
-    
-        
-        /* Focus indicators for accessibility */
-        :focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 1px solid #00f5ff;
+            cursor: pointer;
+            transition: background 0.3s;
         }
-        a:focus-visible, button:focus-visible, .pcard:focus-visible, .fbtn:focus-visible, #sbtn:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 3px;
-            box-shadow: 0 0 15px rgba(0,242,255,0.4);
-        }
-        /* Respect user motion preferences */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-            .floating { animation: none; }
-            .code-trail { display: none !important; }
+        .dot.active {
+            background: #00f5ff;
+            box-shadow: 0 0 10px #00f5ff;
         }
     </style>
-<base target="_blank">
 </head>
 <body>
-    <div id="spotlight"></div>
-    <div id="progress-bar"></div>
-<a href="#main-content" class="skip-link" style="position:absolute;top:-40px;left:0;background:var(--accent);color:#000;padding:8px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-decoration:none;z-index:10001;transition:top 0.3s">Skip to content</a>
-<script>
-// Show skip link on focus
-document.querySelector('.skip-link').addEventListener('focus', function() {
-    this.style.top = '0';
-});
-document.querySelector('.skip-link').addEventListener('blur', function() {
-    this.style.top = '-40px';
-});
-</script>
-
-<div id="cur"></div>
-<div id="code-trail-container"></div>
-
-<div id="toast" role="status" aria-live="polite" aria-atomic="true">
-    <div id="t-icon" style="width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0"></div>
-    <span id="t-msg" style="color:#fff;font-size:13px"></span>
-</div>
-
-<!-- NAV -->
-<nav aria-label="Main navigation" style="position:fixed;top:0;width:100%;z-index:100;padding:20px 40px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);box-sizing:border-box">
-    <a href="#home" style="display:flex;align-items:center;gap:12px;text-decoration:none">
-        <div style="width:38px;height:38px;border:2px solid var(--accent);transform:rotate(45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(0,242,255,.3);flex-shrink:0">
-            <span style="color:#fff;font-weight:900;font-size:17px;transform:rotate(-45deg)">M</span>
+    <div id="ui-layer">
+        <!-- Chapter 3 HUD -->
+        <div id="contact-hud" class="hud-element" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; padding: 2rem; background: rgba(2,2,16,0.8); display: none; text-align: center;">
+            <h2 class="glow-text">HIRE ME</h2>
+            <form id="hire-form">
+                <input type="text" id="form-name" placeholder="NAME" class="neon-border" required style="width: 100%; background: transparent; color: #fff; padding: 10px; margin: 10px 0; font-family: inherit; box-sizing: border-box;">
+                <input type="email" id="form-email" placeholder="EMAIL" class="neon-border" required style="width: 100%; background: transparent; color: #fff; padding: 10px; margin: 10px 0; font-family: inherit; box-sizing: border-box;">
+                <textarea id="form-message" placeholder="MESSAGE" class="neon-border" required style="width: 100%; background: transparent; color: #fff; padding: 10px; margin: 10px 0; font-family: inherit; box-sizing: border-box; height: 100px;"></textarea>
+                <button type="submit" id="submit-btn" class="neon-border" style="background: rgba(0,245,255,0.1); color: #00f5ff; padding: 10px 20px; cursor: pointer; font-family: inherit; width: 100%;">SUBMIT TRANSMISSION</button>
+            </form>
+            <p id="form-status" style="margin-top: 10px; font-size: 0.8rem;"></p>
         </div>
-        <span class="mono" style="color:#fff;letter-spacing:.4em;font-size:12px;font-weight:700">MALIQ OKA</span>
-    </a>
-    <div style="display:flex;gap:32px;align-items:center" class="mono">
-        <a href="#about" style="color:#6b7280;text-decoration:none;font-size:10px;letter-spacing:.3em;text-transform:uppercase;transition:color .2s" onmouseenter="this.style.color='var(--accent)'" onmouseleave="this.style.color='#6b7280'">About</a>
-        <a href="#projects" style="color:#6b7280;text-decoration:none;font-size:10px;letter-spacing:.3em;text-transform:uppercase;transition:color .2s" onmouseenter="this.style.color='var(--accent)'" onmouseleave="this.style.color='#6b7280'">Work</a>
-        <a href="#contact" style="color:var(--accent);border:1px solid var(--accent);padding:7px 22px;border-radius:999px;text-decoration:none;font-size:10px;letter-spacing:.3em;text-transform:uppercase;transition:all .2s" onmouseenter="this.style.background='var(--accent)';this.style.color='#000'" onmouseleave="this.style.background='transparent';this.style.color='var(--accent)'">Hire Me</a>
-    </div>
-</nav>
-<main id="main-content">
 
-<!-- HERO -->
-<section id="home" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;position:relative">
-    <p class="mono floating reveal on" style="color:var(--accent);font-size:10px;letter-spacing:.8em;text-transform:uppercase;margin-bottom:16px">2026 Portfolio</p>
-    <h1 class="reveal on" style="font-size:clamp(3rem,10vw,9rem);font-weight:900;color:#fff;line-height:.95;letter-spacing:-.03em;margin-bottom:20px">
-        FULL STACK<br><span class="hero-grad" id="tw">BUILD</span>
-    </h1>
-    <p class="reveal on" style="max-width:480px;color:#9ca3af;font-size:17px;line-height:1.7;margin-bottom:32px">
-        Crafting high-performance web experiences, WooCommerce ecosystems, and conceptual prototypes.
-    </p>
-    <!-- Only Email and LinkedIn -->
-    <div class="reveal on" style="display:flex;gap:12px">
-        <a href="mailto:maliq.oka123@gmail.com" class="glass" style="width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);text-decoration:none;transition:all .2s" onmouseenter="this.style.background='var(--accent)';this.style.color='#000'" onmouseleave="this.style.background='rgba(255,255,255,.03)';this.style.color='var(--accent)'"><i data-lucide="mail" style="width:17px;height:17px"></i></a>
-        <a href="https://www.linkedin.com/in/maliq-oka-707041137/" target="_blank" class="glass" style="width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);text-decoration:none;transition:all .2s" onmouseenter="this.style.background='var(--accent)';this.style.color='#000'" onmouseleave="this.style.background='rgba(255,255,255,.03)';this.style.color='var(--accent)'">
-            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-        </a>
-    </div>
-    <a href="#about" style="position:absolute;bottom:36px;display:flex;flex-direction:column;align-items:center;gap:6px;color:#4b5563;text-decoration:none;transition:color .2s" onmouseenter="this.style.color='var(--accent)'" onmouseleave="this.style.color='#4b5563'">
-        <span class="mono" style="font-size:9px;letter-spacing:.4em;text-transform:uppercase">Scroll</span>
-        <i data-lucide="chevron-down" style="width:13px;height:13px;animation:bounce 1.5s ease-in-out infinite"></i>
-    </a>
-</section>
-
-<!-- ABOUT -->
-<section id="about" style="padding:140px 40px">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start">
-        <div class="reveal-l on">
-            <h2 style="font-size:clamp(2.5rem,6vw,5rem);font-weight:900;color:#fff;letter-spacing:-.03em;text-transform:uppercase;line-height:1;margin-bottom:20px">About<br><span style="color:var(--accent)">Me</span></h2>
-            <div style="width:72px;height:3px;background:var(--accent);margin-bottom:28px;box-shadow:0 0 12px rgba(0,242,255,.5)"></div>
-            <p style="font-size:clamp(1rem,2vw,1.25rem);color:#fff;font-weight:300;line-height:1.7;margin-bottom:14px">
-                Hello, I'm <strong style="color:var(--accent);font-weight:700">Maliq Oka</strong>. Over the years, I've built over <span style="text-decoration:underline;text-decoration-color:var(--accent)">40+ verified projects</span>.
-            </p>
-            <p style="font-size:1rem;color:#9ca3af;line-height:1.8">
-                With 10+ builds specialized in <strong style="color:#fff">WooCommerce</strong>, I focus on seamless, user-friendly experiences — from e-commerce ecosystems to custom digital environments. Based in Berlin.
-            </p>
+        <!-- Chapter 2 HUD -->
+        <div id="project-hud" class="hud-element" style="bottom: 80px; width: 100%; text-align: center; display: none;">
+            <button id="prev-btn" class="neon-border" style="background: rgba(0,245,255,0.1); color: #00f5ff; padding: 0.5rem 1rem; cursor: pointer; margin-right: 20px;">< PREV DISTRICT</button>
+            <button id="next-btn" class="neon-border" style="background: rgba(0,245,255,0.1); color: #00f5ff; padding: 0.5rem 1rem; cursor: pointer;">NEXT DISTRICT ></button>
         </div>
-        <div class="reveal-r on">
-            <p class="mono" style="font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);margin-bottom:24px">Tech Stack</p>
-            <div id="skills" style="display:flex;flex-direction:column;gap:18px">
-                <div><div style="display:flex;justify-content:space-between;margin-bottom:7px"><span style="color:#fff;font-size:13px;font-weight:600">WordPress / WooCommerce</span><span class="mono" style="color:var(--accent);font-size:11px;font-variant-numeric:tabular-nums">95%</span></div><div class="sbar"><div class="sfill" data-w="95"></div></div></div>
-                <div><div style="display:flex;justify-content:space-between;margin-bottom:7px"><span style="color:#fff;font-size:13px;font-weight:600">PHP / MySQL</span><span class="mono" style="color:var(--accent);font-size:11px;font-variant-numeric:tabular-nums">85%</span></div><div class="sbar"><div class="sfill" data-w="85"></div></div></div>
-                <div><div style="display:flex;justify-content:space-between;margin-bottom:7px"><span style="color:#fff;font-size:13px;font-weight:600">JavaScript / React</span><span class="mono" style="color:var(--accent);font-size:11px;font-variant-numeric:tabular-nums">80%</span></div><div class="sbar"><div class="sfill" data-w="80"></div></div></div>
-                <div><div style="display:flex;justify-content:space-between;margin-bottom:7px"><span style="color:#fff;font-size:13px;font-weight:600">HTML / CSS / Tailwind</span><span class="mono" style="color:var(--accent);font-size:11px;font-variant-numeric:tabular-nums">98%</span></div><div class="sbar"><div class="sfill" data-w="98"></div></div></div>
-                <div><div style="display:flex;justify-content:space-between;margin-bottom:7px"><span style="color:#fff;font-size:13px;font-weight:600">UI/UX Design</span><span class="mono" style="color:var(--accent);font-size:11px;font-variant-numeric:tabular-nums">75%</span></div><div class="sbar"><div class="sfill" data-w="75"></div></div></div>
-                <div><div style="display:flex;justify-content:space-between;margin-bottom:7px"><span style="color:#fff;font-size:13px;font-weight:600">SEO / Performance</span><span class="mono" style="color:var(--accent);font-size:11px;font-variant-numeric:tabular-nums">88%</span></div><div class="sbar"><div class="sfill" data-w="88"></div></div></div>
-            </div>
+
+        <!-- Chapter 1 HUD -->
+        <div id="about-hud" class="hud-element" style="bottom: 80px; width: 100%; text-align: center; display: none;">
+            <p class="glow-text" style="cursor: pointer; letter-spacing: 0.2rem;" onclick="goToChapter(2)">VIEW PROJECTS -></p>
+        </div>
+
+        <!-- Chapter 0 HUD -->
+        <div id="intro-hud" class="hud-element" style="top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; opacity: 0;">
+            <h1 class="glow-text" style="font-size: 3rem; margin-bottom: 0.5rem;">MALIQ OKA</h1>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; letter-spacing: 0.3rem;">FULL STACK DEVELOPER</p>
+            <button id="enter-btn" class="neon-border" style="background: rgba(0,245,255,0.1); color: #00f5ff; padding: 1rem 2.5rem; font-family: inherit; font-size: 1rem; cursor: pointer; transition: 0.3s; pointer-events: auto;">ENTER SYSTEM</button>
+        </div>
+
+        <div id="nav-dots" class="hud-element">
+            <div class="dot active" data-chapter="0"></div>
+            <div class="dot" data-chapter="1"></div>
+            <div class="dot" data-chapter="2"></div>
+            <div class="dot" data-chapter="3"></div>
         </div>
     </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects" style="padding:100px 40px;background:rgba(255,255,255,.01)">
-    <div style="max-width:1500px;margin:0 auto">
-        <div class="reveal on" style="text-align:center;margin-bottom:36px">
-            <h3 style="font-size:clamp(2rem,5vw,4rem);font-weight:900;color:#fff;letter-spacing:-.03em;text-transform:uppercase">Work Archive</h3>
-            <p class="mono" style="font-size:10px;color:var(--accent);margin-top:10px;letter-spacing:.4em;text-transform:uppercase">41 Verified Nodes</p>
-        </div>
-        <!-- FILTER -->
-        <div class="reveal on" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:40px" id="fbar">
-            <button class="fbtn active" data-f="all">All</button>
-            <button class="fbtn" data-f="woo">WooCommerce</button>
-            <button class="fbtn" data-f="staging">Staging</button>
-            <button class="fbtn" data-f="nonprofit">Non-Profit</button>
-            <button class="fbtn" data-f="corporate">Corporate</button>
-        </div>
-        <div id="pgrid" style="display:grid;gap:14px"></div>
-    </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" style="padding:140px 40px">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px">
-        <div class="reveal-l">
-            <h3 style="font-size:clamp(2rem,5vw,4rem);font-weight:900;color:#fff;letter-spacing:-.03em;text-transform:uppercase;line-height:1;margin-bottom:48px">Let's<br><span style="color:var(--accent)">Connect</span></h3>
-            <div style="display:flex;flex-direction:column;gap:24px">
-                <div style="display:flex;align-items:center;gap:18px">
-                    <div class="glass" style="width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0"><i data-lucide="map-pin" style="width:18px;height:18px"></i></div>
-                    <div><p class="mono" style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.2em;margin-bottom:3px">Location</p><p style="color:#fff;font-size:15px">Berlin, Germany</p></div>
-                </div>
-                <div style="display:flex;align-items:center;gap:18px">
-                    <div class="glass" style="width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0"><i data-lucide="mail" style="width:18px;height:18px"></i></div>
-                    <div><p class="mono" style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.2em;margin-bottom:3px">Email</p><p style="color:#fff;font-size:15px">maliq.oka123@gmail.com</p></div>
-                </div>
-                <div style="display:flex;align-items:center;gap:18px">
-                    <div class="glass" style="width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-                    </div>
-                    <div><p class="mono" style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.2em;margin-bottom:3px">LinkedIn</p><a href="https://www.linkedin.com/in/maliq-oka-707041137/" target="_blank" style="color:#fff;font-size:15px;text-decoration:none;transition:color .2s" onmouseenter="this.style.color='var(--accent)'" onmouseleave="this.style.color='#fff'">linkedin.com/in/maliq-oka</a></div>
-                </div>
-                <div style="display:flex;align-items:center;gap:18px">
-                    <div class="glass" style="width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0"><i data-lucide="clock" style="width:18px;height:18px"></i></div>
-                    <div><p class="mono" style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.2em;margin-bottom:3px">Response Time</p><p style="color:#fff;font-size:15px">Within 24 hours</p></div>
-                </div>
-            </div>
-        </div>
-        <div class="reveal-r glass" style="padding:44px;border-radius:24px">
-            <div style="display:flex;flex-direction:column;gap:18px">
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-                    <div>
-                        <label class="mono" style="font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;display:block;margin-bottom:7px">Name</label>
-                        <input id="fn" type="text" placeholder="Your name" aria-label="Your name" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:13px;border-radius:10px;color:#fff;outline:none;font-family:'Space Grotesk',sans-serif;font-size:14px;box-sizing:border-box;transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'">
-                    </div>
-                    <div>
-                        <label class="mono" style="font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;display:block;margin-bottom:7px">Email</label>
-                        <input id="fe" type="email" placeholder="your@email.com" aria-label="Your email" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:13px;border-radius:10px;color:#fff;outline:none;font-family:'Space Grotesk',sans-serif;font-size:14px;box-sizing:border-box;transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'">
-                    </div>
-                </div>
-                <div>
-                    <label class="mono" style="font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;display:block;margin-bottom:7px">Message</label>
-                    <textarea id="fm" rows="5" placeholder="Tell me about your project..." aria-label="Your message" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:13px;border-radius:10px;color:#fff;outline:none;font-family:'Space Grotesk',sans-serif;font-size:14px;box-sizing:border-box;resize:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'"></textarea>
-                </div>
-                <button id="sbtn" style="width:100%;padding:18px;background:var(--accent);color:#000;font-weight:900;font-size:11px;letter-spacing:.2em;text-transform:uppercase;border:none;border-radius:12px;transition:box-shadow .2s;font-family:'Space Grotesk',sans-serif" onmouseenter="this.style.boxShadow='0 0 28px rgba(0,242,255,.5)'" onmouseleave="this.style.boxShadow='none'">
-                    Send Transmission
-                </button>
-            </div>
-        </div>
-    </div>
-</section>
-
-</main>
-<footer style="padding:50px;text-align:center;border-top:1px solid rgba(255,255,255,.04)">
-    <p class="mono" style="font-size:10px;color:#4b5563;letter-spacing:1em;text-transform:uppercase">Maliq Oka © 2026 Berlin</p>
-</footer>
-
-<script>
-// Check if touch device
-const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
-
-// INTRO + Scroll to top on load
-window.addEventListener('load', () => {
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-        const el = document.getElementById('intro');
-        if(el) {
-            el.classList.add('out');
-            setTimeout(() => el.remove(), 900);
-        }
-    }, 1100);
-});
-
-// CURSOR & CODE TRAIL - Only on non-touch devices
-if (!isTouchDevice) {
-    const cur = document.getElementById('cur');
-    const trailContainer = document.getElementById('code-trail-container');
-    let mx=0,my=0;
-
-    // Code snippets for the trail
-    const codeSnippets = [
-        // Green - Terminal/Commands
-        { text: 'git commit -m "fix"', color: '#4ade80' },
-        { text: 'npm install', color: '#4ade80' },
-        { text: 'docker build -t app', color: '#4ade80' },
-        { text: 'sudo apt-get update', color: '#4ade80' },
-        { text: 'git push origin main', color: '#4ade80' },
-        { text: 'kubectl apply -f', color: '#4ade80' },
-        { text: 'terraform apply', color: '#4ade80' },
-        { text: 'ls -la', color: '#4ade80' },
-        { text: 'chmod +x script.sh', color: '#4ade80' },
-        // Yellow - JavaScript
-        { text: 'const x = 42', color: '#facc15' },
-        { text: 'function(){}', color: '#facc15' },
-        { text: '=> {}', color: '#facc15' },
-        { text: 'await fetch()', color: '#facc15' },
-        { text: 'console.log(x)', color: '#facc15' },
-        { text: 'import React', color: '#facc15' },
-        { text: 'useEffect(()=>{})', color: '#facc15' },
-        { text: 'Promise.all()', color: '#facc15' },
-        { text: '.map().filter()', color: '#facc15' },
-        { text: 'Array.from()', color: '#facc15' },
-        // Blue - SQL
-        { text: 'SELECT * FROM', color: '#60a5fa' },
-        { text: 'INSERT INTO', color: '#60a5fa' },
-        { text: 'UPDATE SET', color: '#60a5fa' },
-        { text: 'DELETE WHERE', color: '#60a5fa' },
-        { text: 'JOIN ON', color: '#60a5fa' },
-        { text: 'GROUP BY', color: '#60a5fa' },
-        { text: 'ORDER BY', color: '#60a5fa' },
-        { text: 'CREATE TABLE', color: '#60a5fa' },
-        { text: 'PRIMARY KEY', color: '#60a5fa' },
-        { text: 'FOREIGN KEY', color: '#60a5fa' },
-        // Purple - DevOps
-        { text: 'kubernetes', color: '#c084fc' },
-        { text: 'docker push', color: '#c084fc' },
-        { text: 'aws s3 sync', color: '#c084fc' },
-        { text: 'ci/cd pipeline', color: '#c084fc' },
-        { text: 'load balancer', color: '#c084fc' },
-        { text: 'auto-scaling', color: '#c084fc' },
-        { text: 'monitoring', color: '#c084fc' },
-        { text: 'prometheus', color: '#c084fc' },
-        { text: 'grafana', color: '#c084fc' },
-        { text: 'nginx.conf', color: '#c084fc' },
-        // Cyan - CSS/HTML
-        { text: '<div></div>', color: '#00f2ff' },
-        { text: 'display: flex', color: '#00f2ff' },
-        { text: 'position: fixed', color: '#00f2ff' },
-        { text: 'margin: 0', color: '#00f2ff' },
-        { text: 'padding: 20px', color: '#00f2ff' },
-        { text: 'z-index: 999', color: '#00f2ff' },
-        { text: 'color: #fff', color: '#00f2ff' },
-        { text: 'border-radius:', color: '#00f2ff' },
-        { text: 'box-shadow:', color: '#00f2ff' },
-        { text: 'transition:', color: '#00f2ff' },
-        // Orange - Logic
-        { text: 'if (true)', color: '#fb923c' },
-        { text: 'else if', color: '#fb923c' },
-        { text: 'for loop', color: '#fb923c' },
-        { text: 'while (x)', color: '#fb923c' },
-        { text: 'return null', color: '#fb923c' },
-        { text: 'true false', color: '#fb923c' },
-        { text: '&& || !', color: '#fb923c' },
-        { text: '=== !==', color: '#fb923c' },
-        { text: '++i i--', color: '#fb923c' },
-        { text: '?? ?:', color: '#fb923c' }
-    ];
-
-    let lastTrailTime = 0;
-    const trailInterval = 100; // ms between trail elements (slightly slower)
-    const maxTrails = 12; // Reduced from 20 for better performance
-    const trails = [];
-
-    document.addEventListener('mousemove', e => {
-        mx = e.clientX;
-        my = e.clientY;
-        cur.style.left = mx + 'px';
-        cur.style.top = my + 'px';
-
-        const now = Date.now();
-        if (now - lastTrailTime > trailInterval) {
-            lastTrailTime = now;
-            createCodeTrail(mx, my);
-        }
-    });
-
-    function createCodeTrail(x, y) {
-        const snippet = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
-        const el = document.createElement('div');
-        el.className = 'code-trail';
-        el.textContent = snippet.text;
-        el.style.color = snippet.color;
-        el.style.left = x + 'px';
-        el.style.top = y + 'px';
-
-        // Random offset
-        const offsetX = (Math.random() - 0.5) * 60;
-        const offsetY = (Math.random() - 0.5) * 60;
-        el.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
-
-        trailContainer.appendChild(el);
-        trails.push(el);
-
-        // Fade out and remove
-        setTimeout(() => {
-            el.style.opacity = '0';
-        }, 100);
-
-        setTimeout(() => {
-            el.remove();
-            const index = trails.indexOf(el);
-            if (index > -1) trails.splice(index, 1);
-        }, 600);
-
-        // Limit max trails
-        if (trails.length > maxTrails) {
-            const old = trails.shift();
-            if (old) old.remove();
-        }
-    }
-
-    function addHov(el) { 
-        el.addEventListener('mouseenter', () => document.body.classList.add('hov')); 
-        el.addEventListener('mouseleave', () => document.body.classList.remove('hov')); 
-    }
-    document.querySelectorAll('a,button').forEach(addHov);
-}
-
-// 3D FLOATING TECH ELEMENTS - Premium Three.js background
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-renderer.setSize(innerWidth, innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-document.body.appendChild(renderer.domElement);
-renderer.domElement.style.position = 'fixed';
-renderer.domElement.style.inset = '0';
-renderer.domElement.style.zIndex = '-1';
-
-// Tech symbols as 3D floating elements
-const techSymbols = [
-    { text: '{ }', color: 0x00f2ff, size: 1.2 },
-    { text: '</>', color: 0x4ade80, size: 1.0 },
-    { text: '[ ]', color: 0xfacc15, size: 1.1 },
-    { text: '( )', color: 0xc084fc, size: 1.0 },
-    { text: '&&', color: 0xfb923c, size: 0.9 },
-    { text: '||', color: 0x00f2ff, size: 0.9 },
-    { text: '=>', color: 0x4ade80, size: 1.0 },
-    { text: '++', color: 0xfacc15, size: 0.8 },
-    { text: 'WP', color: 0x00f2ff, size: 1.3 },
-    { text: 'Woo', color: 0x9b59b6, size: 1.2 },
-    { text: 'JS', color: 0xfacc15, size: 1.1 },
-    { text: 'PHP', color: 0x777bb4, size: 1.1 },
-    { text: 'SQL', color: 0xfacc15, size: 1.0 },
-    { text: 'Git', color: 0xf05032, size: 1.0 },
-    { text: '$', color: 0x4ade80, size: 1.2 }
-];
-
-// Create text sprites
-function createTextSprite(text, color, size) {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 256;
-    canvas.height = 128;
-
-    ctx.font = 'bold 60px "JetBrains Mono", monospace';
-    ctx.fillStyle = '#' + color.toString(16).padStart(6, '0');
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(text, 128, 64);
-
-    // Add glow effect
-    ctx.shadowColor = '#' + color.toString(16).padStart(6, '0');
-    ctx.shadowBlur = 20;
-    ctx.fillText(text, 128, 64);
-
-    const texture = new THREE.CanvasTexture(canvas);
-    const material = new THREE.SpriteMaterial({ 
-        map: texture, 
-        transparent: true,
-        opacity: 0.8
-    });
-    const sprite = new THREE.Sprite(material);
-    sprite.scale.set(size * 2, size, 1);
-    return sprite;
-}
-
-// Create floating elements
-const floatingElements = [];
-const elementCount = innerWidth < 768 ? 15 : 25;
-
-for (let i = 0; i < elementCount; i++) {
-    const symbol = techSymbols[Math.floor(Math.random() * techSymbols.length)];
-    const sprite = createTextSprite(symbol.text, symbol.color, symbol.size);
-
-    sprite.position.x = (Math.random() - 0.5) * 40;
-    sprite.position.y = (Math.random() - 0.5) * 30;
-    sprite.position.z = (Math.random() - 0.5) * 20 - 10;
-
-    sprite.userData = {
-        speedX: (Math.random() - 0.5) * 0.02,
-        speedY: (Math.random() - 0.5) * 0.02,
-        speedZ: (Math.random() - 0.5) * 0.01,
-        rotSpeedX: (Math.random() - 0.5) * 0.01,
-        rotSpeedY: (Math.random() - 0.5) * 0.01
-    };
-
-    scene.add(sprite);
-    floatingElements.push(sprite);
-}
-
-// Add connecting lines between nearby elements
-const lineMaterial = new THREE.LineBasicMaterial({ 
-    color: 0x00f2ff, 
-    transparent: true, 
-    opacity: 0.15 
-});
-
-// Add ambient particles (stars but tech-themed)
-const particlesGeometry = new THREE.BufferGeometry();
-const particlesCount = 800;
-const posArray = new Float32Array(particlesCount * 3);
-
-for(let i = 0; i < particlesCount * 3; i++) {
-    posArray[i] = (Math.random() - 0.5) * 100;
-}
-
-particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-const particlesMaterial = new THREE.PointsMaterial({
-    size: 0.05,
-    color: 0x00f2ff,
-    transparent: true,
-    opacity: 0.6
-});
-
-const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-scene.add(particlesMesh);
-
-// Camera position
-camera.position.z = 20;
-
-// COMPLEX 3D SHAPES - Premium geometric elements
-const shapesGroup = new THREE.Group();
-
-// 1. Wireframe Icosahedron (complex geometric shape)
-const icoGeometry = new THREE.IcosahedronGeometry(4, 1);
-const icoMaterial = new THREE.MeshBasicMaterial({
-    color: 0x00f2ff,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.15
-});
-const icosahedron = new THREE.Mesh(icoGeometry, icoMaterial);
-icosahedron.position.set(-12, 5, -15);
-icosahedron.userData = {
-    rotSpeedX: 0.003,
-    rotSpeedY: 0.005,
-    floatSpeed: 0.001,
-    floatOffset: 0
-};
-shapesGroup.add(icosahedron);
-
-// 2. Wireframe Torus Knot (mathematical beauty)
-const torusGeometry = new THREE.TorusKnotGeometry(3, 0.8, 100, 16);
-const torusMaterial = new THREE.MeshBasicMaterial({
-    color: 0xc084fc,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.12
-});
-const torusKnot = new THREE.Mesh(torusGeometry, torusMaterial);
-torusKnot.position.set(15, -8, -20);
-torusKnot.userData = {
-    rotSpeedX: 0.002,
-    rotSpeedY: 0.004,
-    floatSpeed: 0.0015,
-    floatOffset: Math.PI
-};
-shapesGroup.add(torusKnot);
-
-// 3. Wireframe Octahedron (diamond shape)
-const octaGeometry = new THREE.OctahedronGeometry(2.5, 0);
-const octaMaterial = new THREE.MeshBasicMaterial({
-    color: 0x4ade80,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.18
-});
-const octahedron = new THREE.Mesh(octaGeometry, octaMaterial);
-octahedron.position.set(8, 12, -10);
-octahedron.userData = {
-    rotSpeedX: 0.004,
-    rotSpeedY: 0.003,
-    floatSpeed: 0.002,
-    floatOffset: Math.PI / 2
-};
-shapesGroup.add(octahedron);
-
-// 4. Multiple floating cubes (code blocks metaphor)
-const cubeGeometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
-const cubeColors = [0x00f2ff, 0xfacc15, 0xfb923c, 0x4ade80];
-
-for (let i = 0; i < 8; i++) {
-    const cubeMaterial = new THREE.MeshBasicMaterial({
-        color: cubeColors[i % cubeColors.length],
-        wireframe: true,
-        transparent: true,
-        opacity: 0.1 + (i * 0.02)
-    });
-    const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-
-    cube.position.x = (Math.random() - 0.5) * 30;
-    cube.position.y = (Math.random() - 0.5) * 25;
-    cube.position.z = -12 - Math.random() * 15;
-
-    cube.rotation.x = Math.random() * Math.PI;
-    cube.rotation.y = Math.random() * Math.PI;
-
-    cube.userData = {
-        rotSpeedX: (Math.random() - 0.5) * 0.01,
-        rotSpeedY: (Math.random() - 0.5) * 0.01,
-        rotSpeedZ: (Math.random() - 0.5) * 0.01,
-        floatSpeed: 0.0005 + Math.random() * 0.001,
-        floatOffset: Math.random() * Math.PI * 2,
-        originalY: cube.position.y
-    };
-
-    shapesGroup.add(cube);
-}
-
-// 5. Ring structure (represents connection/network)
-const ringGeometry = new THREE.RingGeometry(8, 8.3, 64);
-const ringMaterial = new THREE.MeshBasicMaterial({
-    color: 0x00f2ff,
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 0.08
-});
-const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-ring.position.set(0, 0, -25);
-ring.userData = {
-    rotSpeedX: 0.001,
-    rotSpeedY: 0.003
-};
-shapesGroup.add(ring);
-
-// 6. Dodecahedron (12-sided, represents complete structure)
-const dodecaGeometry = new THREE.DodecahedronGeometry(3, 0);
-const dodecaMaterial = new THREE.MeshBasicMaterial({
-    color: 0xff6b6b,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.1
-});
-const dodecahedron = new THREE.Mesh(dodecaGeometry, dodecaMaterial);
-dodecahedron.position.set(-10, -10, -18);
-dodecahedron.userData = {
-    rotSpeedX: 0.0025,
-    rotSpeedY: 0.004,
-    floatSpeed: 0.0012,
-    floatOffset: Math.PI * 1.5
-};
-shapesGroup.add(dodecahedron);
-
-scene.add(shapesGroup);
-
-// Mouse interaction
-let mouseX = 0, mouseY = 0;
-document.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX / innerWidth) * 2 - 1;
-    mouseY = -(e.clientY / innerHeight) * 2 + 1;
-});
-
-// Animation loop
-let animationId;
-function animate() {
-    animationId = requestAnimationFrame(animate);
-
-    // Rotate and move floating elements
-    floatingElements.forEach((element, i) => {
-        element.position.x += element.userData.speedX;
-        element.position.y += element.userData.speedY;
-        element.position.z += element.userData.speedZ;
-
-        // Gentle rotation
-        element.material.rotation += 0.002;
-
-        // Mouse influence (subtle)
-        element.position.x += mouseX * 0.001 * (i % 3 === 0 ? 1 : -1);
-        element.position.y += mouseY * 0.001 * (i % 3 === 0 ? 1 : -1);
-
-        // Boundary check - wrap around
-        if (Math.abs(element.position.x) > 25) element.position.x *= -0.9;
-        if (Math.abs(element.position.y) > 20) element.position.y *= -0.9;
-        if (Math.abs(element.position.z) > 15) element.position.z *= -0.9;
-    });
-
-    // Rotate particles slowly
-    particlesMesh.rotation.y += 0.0005;
-    particlesMesh.rotation.x += 0.0002;
-
-    // Animate complex shapes
-    shapesGroup.children.forEach((shape, index) => {
-        if (shape.userData.rotSpeedX) {
-            shape.rotation.x += shape.userData.rotSpeedX;
-        }
-        if (shape.userData.rotSpeedY) {
-            shape.rotation.y += shape.userData.rotSpeedY;
-        }
-        if (shape.userData.rotSpeedZ) {
-            shape.rotation.z += shape.userData.rotSpeedZ;
-        }
-
-        // Floating motion
-        if (shape.userData.floatSpeed) {
-            const time = Date.now() * 0.001;
-            const offset = shape.userData.floatOffset || 0;
-
-            if (shape.userData.originalY !== undefined) {
-                // For cubes - float around original position
-                shape.position.y = shape.userData.originalY + Math.sin(time * shape.userData.floatSpeed + offset) * 2;
-            } else {
-                // For main shapes - gentle floating
-                shape.position.y += Math.sin(time * shape.userData.floatSpeed + offset) * 0.01;
+    <script>
+        // Data extraction confirmed
+        const personalData = {
+            name: "Maliq Oka",
+            title: "Full Stack Developer",
+            tagline: "Crafting high-performance web experiences, WooCommerce ecosystems, and conceptual prototypes.",
+            bio: "Hello, I'm Maliq Oka. Over the years, I've built over 40+ verified projects. With 10+ builds specialized in WooCommerce, I focus on seamless, user-friendly experiences — from e-commerce ecosystems to custom digital environments. Based in Berlin.",
+            skills: [
+                { name: "WordPress / WooCommerce", level: 95 },
+                { name: "PHP / MySQL", level: 85 },
+                { name: "JavaScript / React", level: 80 },
+                { name: "HTML / CSS / Tailwind", level: 98 },
+                { name: "UI/UX Design", level: 75 },
+                { name: "SEO / Performance", level: 88 }
+            ],
+            projects: [
+                {n:"Above All Eco Clean",   u:"aboveallecoclean.hostpapadesign.com",           tags:["staging"]},
+                {n:"Ahtran Scripts",        u:"ahtranscripts.com",                             tags:["corporate"]},
+                {n:"AllProbe Environmental",u:"allprobeenvironmental.com",                     tags:["corporate"]},
+                {n:"ARC Wealth Options",    u:"arcwealthoptions.ca",                           tags:["corporate"]},
+                {n:"Atelier East Design",   u:"ateliereastdesign.com",                         tags:["corporate"]},
+                {n:"Ausilon",               u:"ausilon.hostpapadesign.com",                    tags:["staging"]},
+                {n:"Bruce Campbell Author", u:"brucecampbellauthor.com",                       tags:["corporate"]},
+                {n:"Bruce Campbell Staging",u:"brucecampbellauthor.hostpapadesign.com",        tags:["staging"]},
+                {n:"CATAPULT",              u:"catapultsearch.com",                            tags:["corporate"]},
+                {n:"Corporate Video",       u:"torontocameramanservices2.hostpapadesign.com",  tags:["staging"]},
+                {n:"Dare to Rise",          u:"daretorisefoundation.org",                      tags:["nonprofit"]},
+                {n:"Delisle Dental",        u:"delisledentalsk.ca",                            tags:["corporate"]},
+                {n:"Doctors Hub",           u:"doctorshub.ca",                                 tags:["corporate"]},
+                {n:"Ecotech Saunas",        u:"ecotechsaunas.com",                             tags:["woo"]},
+                {n:"Ecotech Staging",       u:"ecotechsaunas.hostpapadesign.com",              tags:["staging","woo"]},
+                {n:"Elevate Strengths",     u:"elevatestrengths.com",                          tags:["corporate"]},
+                {n:"Elevate Staging",       u:"elevatestrengths.hostpapadesign.com",           tags:["staging"]},
+                {n:"Factor Ten",            u:"factorten.hostpapadesign.com",                  tags:["staging"]},
+                {n:"Freedom Prosthetics",   u:"freedomprosthetics.ca",                         tags:["corporate"]},
+                {n:"Gymnastics Mississauga",u:"gymmississauga.hostpapadesign.com",             tags:["staging","nonprofit"]},
+                {n:"Hampden Diner PA",      u:"hampdendinerpa.com",                            tags:["woo"]},
+                {n:"Hunter Valley Cheese",  u:"huntervalleycheese.hostpapadesign.com",         tags:["staging","woo"]},
+                {n:"Jayr Memorials",        u:"jayrmemorials.com",                             tags:["woo"]},
+                {n:"Larca Machining",       u:"larcamachining.hostpapadesign.com",             tags:["staging","corporate"]},
+                {n:"Legaltech LLC",         u:"legaltech-llc.com",                             tags:["corporate"]},
+                {n:"Les Treize Inc.",       u:"lestreizeinc.org",                              tags:["nonprofit"]},
+                {n:"Lost Time Mgmt",        u:"losttimemanagement.com",                        tags:["corporate"]},
+                {n:"Michael Kent Author",   u:"kentwriter.com",                                tags:["corporate"]},
+                {n:"Sew Helpful",           u:"sewhelpful.hostpapadesign.com",                 tags:["staging","woo"]},
+                {n:"North Shore Repair",    u:"nsrestore.ca",                                  tags:["corporate"]},
+                {n:"Palazzo Interiors",     u:"palazzointeriors.com",                          tags:["corporate"]},
+                {n:"PBG Canada",            u:"pbgcanada.ca",                                  tags:["corporate"]},
+                {n:"Perinatal Psychotherapy",u:"perinatalpsychotherapy.ca",                    tags:["corporate"]},
+                {n:"Potash Global",         u:"potash.eu",                                     tags:["corporate"]},
+                {n:"Premier Fluid Systems", u:"pfspumps.com",                                  tags:["corporate"]},
+                {n:"Re-Lit",                u:"re-lit.com.au",                                 tags:["woo"]},
+                {n:"Roswell Community",     u:"roswell.hostpapadesign.com",                    tags:["staging","nonprofit"]},
+                {n:"Sports Numbers",        u:"sportsnumbers.ca",                              tags:["woo"]},
+                {n:"Sunset Point",          u:"sunsetpoint.ca",                                tags:["corporate"]},
+                {n:"Unickel Insurance",     u:"unickelinsurance.com",                          tags:["corporate"]},
+                {n:"Wilmington Head Start", u:"wilmheadstart.org",                             tags:["nonprofit"]}
+            ],
+            contact: {
+                email: "maliq.oka123@gmail.com",
+                linkedin: "https://www.linkedin.com/in/maliq-oka-707041137/"
             }
-        }
-    });
-
-    // Slowly rotate the entire shapes group
-    shapesGroup.rotation.y += 0.0003;
-
-    // Camera gentle movement based on mouse
-    camera.position.x += (mouseX * 2 - camera.position.x) * 0.02;
-    camera.position.y += (mouseY * 2 - camera.position.y) * 0.02;
-    camera.lookAt(scene.position);
-
-    renderer.render(scene, camera);
-}
-animate();
-
-// Handle resize
-window.addEventListener('resize', () => {
-    camera.aspect = innerWidth / innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(innerWidth, innerHeight);
-});
-
-// Pause when tab hidden
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        cancelAnimationFrame(animationId);
-    } else {
-        animate();
-    }
-});
-
-// TYPEWRITER
-const words=['DEVELOPER','BUILDER','CREATOR','ENGINEER'];
-let wi=0,ci=0,del=false;
-const tw=document.getElementById('tw');
-function type(){
-    const w=words[wi];
-    tw.textContent=del?w.slice(0,--ci):w.slice(0,++ci);
-    if(!del&&ci===w.length){del=true;setTimeout(type,2000);return;}
-    if(del&&ci===0){del=false;wi=(wi+1)%words.length;}
-    setTimeout(type,del?55:110);
-}
-setTimeout(type,1600);
-
-// SCROLL REVEAL
-document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>{
-    new IntersectionObserver(([e])=>{ if(e.isIntersecting) el.classList.add('on'); },{threshold:.1}).observe(el);
-});
-
-// SKILL BARS
-new IntersectionObserver(([e])=>{
-    if(e.isIntersecting) document.querySelectorAll('.sfill').forEach(b=>b.style.width=b.dataset.w+'%');
-},{threshold:.3}).observe(document.getElementById('skills'));
-
-// TOAST
-function toast(msg,ok=true){
-    const t=document.getElementById('toast');
-    const ic=document.getElementById('t-icon');
-    document.getElementById('t-msg').textContent=msg;
-    ic.style.background=ok?'rgba(0,242,255,.12)':'rgba(255,60,60,.12)';
-    ic.innerHTML=ok
-        ?`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00f2ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
-        :`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
-    t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),4000);
-}
-
-// FORM
-document.getElementById('sbtn').addEventListener('click',async()=>{
-    const n=document.getElementById('fn').value.trim();
-    const e=document.getElementById('fe').value.trim();
-    const m=document.getElementById('fm').value.trim();
-    if(!n||!e||!m){toast('Please fill all fields.',false);return;}
-    const btn=document.getElementById('sbtn');
-    btn.textContent='Sending...'; btn.disabled=true;
-    const fd=new FormData();
-    fd.append('access_key','8ced933c-0914-46d5-aabc-a559e61de0b0');
-    fd.append('name',n); fd.append('email',e); fd.append('message',m);
-    try{
-        const r=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
-        if(r.ok){toast("Message sent! I'll be in touch soon.");document.getElementById('fn').value='';document.getElementById('fe').value='';document.getElementById('fm').value='';}
-        else toast('Something went wrong. Try again.',false);
-    }catch{toast('Network error. Please try again.',false);}
-    finally{btn.textContent='Send Transmission';btn.disabled=false;}
-});
-
-// PROJECTS DATA (41 working sites)
-const projects=[
-    {n:"Above All Eco Clean",   u:"aboveallecoclean.hostpapadesign.com",           tags:["staging"]},
-    {n:"Ahtran Scripts",        u:"ahtranscripts.com",                             tags:["corporate"]},
-    {n:"AllProbe Environmental",u:"allprobeenvironmental.com",                     tags:["corporate"]},
-    {n:"ARC Wealth Options",    u:"arcwealthoptions.ca",                           tags:["corporate"]},
-    {n:"Atelier East Design",   u:"ateliereastdesign.com",                         tags:["corporate"]},
-    {n:"Ausilon",               u:"ausilon.hostpapadesign.com",                    tags:["staging"]},
-    {n:"Bruce Campbell Author", u:"brucecampbellauthor.com",                       tags:["corporate"]},
-    {n:"Bruce Campbell Staging",u:"brucecampbellauthor.hostpapadesign.com",        tags:["staging"]},
-    {n:"CATAPULT",              u:"catapultsearch.com",                            tags:["corporate"]},
-    {n:"Corporate Video",       u:"torontocameramanservices2.hostpapadesign.com",  tags:["staging"]},
-    {n:"Dare to Rise",          u:"daretorisefoundation.org",                      tags:["nonprofit"]},
-    {n:"Delisle Dental",        u:"delisledentalsk.ca",                            tags:["corporate"]},
-    {n:"Doctors Hub",           u:"doctorshub.ca",                                 tags:["corporate"]},
-    {n:"Ecotech Saunas",        u:"ecotechsaunas.com",                             tags:["woo"]},
-    {n:"Ecotech Staging",       u:"ecotechsaunas.hostpapadesign.com",              tags:["staging","woo"]},
-    {n:"Elevate Strengths",     u:"elevatestrengths.com",                          tags:["corporate"]},
-    {n:"Elevate Staging",       u:"elevatestrengths.hostpapadesign.com",           tags:["staging"]},
-    {n:"Factor Ten",            u:"factorten.hostpapadesign.com",                  tags:["staging"]},
-    {n:"Freedom Prosthetics",   u:"freedomprosthetics.ca",                         tags:["corporate"]},
-    {n:"Gymnastics Mississauga",u:"gymmississauga.hostpapadesign.com",             tags:["staging","nonprofit"]},
-    {n:"Hampden Diner PA",      u:"hampdendinerpa.com",                            tags:["woo"]},
-    {n:"Hunter Valley Cheese",  u:"huntervalleycheese.hostpapadesign.com",         tags:["staging","woo"]},
-    {n:"Jayr Memorials",        u:"jayrmemorials.com",                             tags:["woo"]},
-    {n:"Larca Machining",       u:"larcamachining.hostpapadesign.com",             tags:["staging","corporate"]},
-    {n:"Legaltech LLC",         u:"legaltech-llc.com",                             tags:["corporate"]},
-    {n:"Les Treize Inc.",       u:"lestreizeinc.org",                              tags:["nonprofit"]},
-    {n:"Lost Time Mgmt",        u:"losttimemanagement.com",                        tags:["corporate"]},
-    {n:"Michael Kent Author",   u:"kentwriter.com",                                tags:["corporate"]},
-    {n:"Sew Helpful",           u:"sewhelpful.hostpapadesign.com",                 tags:["staging","woo"]},
-    {n:"North Shore Repair",    u:"nsrestore.ca",                                  tags:["corporate"]},
-    {n:"Palazzo Interiors",     u:"palazzointeriors.com",                          tags:["corporate"]},
-    {n:"PBG Canada",            u:"pbgcanada.ca",                                  tags:["corporate"]},
-    {n:"Perinatal Psychotherapy",u:"perinatalpsychotherapy.ca",                    tags:["corporate"]},
-    {n:"Potash Global",         u:"potash.eu",                                     tags:["corporate"]},
-    {n:"Premier Fluid Systems", u:"pfspumps.com",                                  tags:["corporate"]},
-    {n:"Re-Lit",                u:"re-lit.com.au",                                 tags:["woo"]},
-    {n:"Roswell Community",     u:"roswell.hostpapadesign.com",                    tags:["staging","nonprofit"]},
-    {n:"Sports Numbers",        u:"sportsnumbers.ca",                              tags:["woo"]},
-    {n:"Sunset Point",          u:"sunsetpoint.ca",                                tags:["corporate"]},
-    {n:"Unickel Insurance",     u:"unickelinsurance.com",                          tags:["corporate"]},
-    {n:"Wilmington Head Start", u:"wilmheadstart.org",                             tags:["nonprofit"]}
-];
-
-// BUILD GRID - Simplified cards without screenshot loading
-const grid=document.getElementById('pgrid');
-grid.innerHTML=projects.map((p,i)=>`
-    <a href="https://${p.u}" target="_blank" rel="noopener"
-       class="pcard" data-tags="${p.tags.join(',')}" id="pc${i}">
-        <div class="pcard-body">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(0,242,255,.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:9px;flex-shrink:0"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            <h4 style="color:#fff;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.n}</h4>
-            <p style="font-size:9px;color:#6b7280;font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:10px">${p.u}</p>
-            <div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:auto">
-                ${p.tags.map(t=>`<span style="font-size:7px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;padding:2px 7px;border-radius:999px;border:1px solid rgba(0,242,255,.2);color:rgba(0,242,255,.55)">${t}</span>`).join('')}
-            </div>
-        </div>
-    </a>
-`).join('');
-
-// Add hover effects for cursor
-if (!isTouchDevice) {
-    document.querySelectorAll('.pcard').forEach(card => {
-        card.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
-        card.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
-    });
-}
-
-// FILTER
-document.querySelectorAll('.fbtn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-        document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        const f=btn.dataset.f;
-        document.querySelectorAll('.pcard').forEach(card=>{
-            const match = f==='all' || card.dataset.tags.split(',').includes(f);
-            card.hidden = !match;
-        });
-    });
-});
-
-lucide.createIcons();
-
-// RESPONSIVE GRID
-function setGrid(){
-    const c=innerWidth<640?2:innerWidth<1024?3:innerWidth<1400?3:4;
-    grid.style.gridTemplateColumns=`repeat(${c},1fr)`;
-}
-// Debounced resize handler for performance
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
         };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
 
-setGrid();
-window.addEventListener('resize', debounce(setGrid, 150));
+        // --- THREE.js CORE ---
+        let scene, camera, renderer;
+        let starfield, planet, atmosphere, robots = [];
+        let cityHub, holographicPanels = [], neuralNet;
+        let projectGroups = [], currentDistrict = 0;
+        let landingPad, guardSilhouettes = [];
+        let raycaster = new THREE.Raycaster();
+        let mouse = { x: 0, y: 0 };
+        let targetMouse = { x: 0, y: 0 };
+        let currentChapter = 0;
 
-// ANCHOR LINK HANDLER - Prevent opening in new window, use smooth scroll
-(function() {
-    // Handle all anchor link clicks
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
+        function initCore() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+            camera.position.z = 1000; // Warp speed start position
 
-            // Only handle if it's a valid anchor link
-            if (href && href.startsWith('#') && href.length > 1) {
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.body.appendChild(renderer.domElement);
+
+            window.addEventListener('resize', onWindowResize);
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('touchmove', onTouchMove);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onMouseMove(event) {
+            targetMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            targetMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        }
+
+        function onTouchMove(event) {
+            if (event.touches.length > 0) {
+                targetMouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+                targetMouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+            }
+        }
+
+        // --- CHAPTER 0: SPACE ---
+        function createStarfield() {
+            const starCount = 10000;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(starCount * 3);
+
+            for (let i = 0; i < starCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 2000;
+                positions[i+1] = (Math.random() - 0.5) * 2000;
+                positions[i+2] = (Math.random() - 0.5) * 2000;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const material = new THREE.PointsMaterial({ color: 0xffffff, size: 0.7, transparent: true });
+            starfield = new THREE.Points(geometry, material);
+            scene.add(starfield);
+        }
+
+        function createPlanet() {
+            // Procedural planet texture
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const context = canvas.getContext('2d');
+
+            // Background
+            context.fillStyle = '#050510';
+            context.fillRect(0, 0, 512, 512);
+
+            // Craters/Details
+            for(let i=0; i<200; i++) {
+                const x = Math.random() * 512;
+                const y = Math.random() * 512;
+                const radius = Math.random() * 3;
+                context.beginPath();
+                context.arc(x, y, radius, 0, Math.PI * 2);
+                context.fillStyle = Math.random() > 0.5 ? '#1a1a3a' : '#00f5ff22';
+                context.fill();
+            }
+
+            // Energy grid (city lights)
+            context.strokeStyle = '#00f5ff44';
+            context.lineWidth = 0.5;
+            for(let i=0; i<512; i+=32) {
+                context.beginPath(); context.moveTo(i, 0); context.lineTo(i, 512); context.stroke();
+                context.beginPath(); context.moveTo(0, i); context.lineTo(512, i); context.stroke();
+            }
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const geometry = new THREE.SphereGeometry(100, 64, 64);
+            const material = new THREE.MeshPhongMaterial({
+                map: texture,
+                shininess: 10,
+                bumpScale: 1,
+                transparent: true
+            });
+            planet = new THREE.Mesh(geometry, material);
+            planet.position.set(0, 0, -200);
+            scene.add(planet);
+
+            // Atmosphere
+            const atmoGeo = new THREE.SphereGeometry(105, 64, 64);
+            const atmoMat = new THREE.MeshBasicMaterial({
+                color: 0x00f5ff,
+                transparent: true,
+                opacity: 0.1,
+                side: THREE.BackSide
+            });
+            atmosphere = new THREE.Mesh(atmoGeo, atmoMat);
+            atmosphere.position.copy(planet.position);
+            scene.add(atmosphere);
+
+            // Lighting
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(5, 3, 5);
+            scene.add(light);
+            scene.add(new THREE.AmbientLight(0x111122));
+        }
+
+        function createRobots() {
+            for(let i=0; i<5; i++) {
+                const robot = new THREE.Group();
+                const body = new THREE.Mesh(new THREE.BoxGeometry(2, 3, 1), new THREE.MeshBasicMaterial({color: 0x222244}));
+                const head = new THREE.Mesh(new THREE.SphereGeometry(0.8), new THREE.MeshBasicMaterial({color: 0x444488}));
+                head.position.y = 2;
+                robot.add(body, head);
+                robot.position.set((Math.random()-0.5)*400, (Math.random()-0.5)*400, (Math.random()-0.5)*400);
+                scene.add(robot);
+                robots.push({mesh: robot, speed: Math.random() * 0.2 + 0.1});
+            }
+        }
+
+        function initIntro() {
+            createStarfield();
+            createPlanet();
+            createRobots();
+
+            // HUD Nav Events
+            document.querySelectorAll('.dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const ch = parseInt(dot.dataset.chapter);
+                    if(ch !== currentChapter) goToChapter(ch);
+                });
+            });
+
+            // Intro Animation
+            gsap.to(camera.position, {
+                z: 250,
+                duration: 4,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    gsap.to("#intro-hud", { opacity: 1, duration: 1 });
+                }
+            });
+
+            document.getElementById('enter-btn').addEventListener('click', () => {
+                gsap.to("#intro-hud", { opacity: 0, duration: 0.5, onComplete: () => {
+                    document.getElementById('intro-hud').style.display = 'none';
+                    goToChapter(1);
+                }});
+            });
+        }
+
+        function goToChapter(index) {
+            currentChapter = index;
+            document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === index));
+
+            document.getElementById('about-hud').style.display = index === 1 ? 'block' : 'none';
+            document.getElementById('project-hud').style.display = index === 2 ? 'block' : 'none';
+            document.getElementById('contact-hud').style.display = index === 3 ? 'block' : 'none';
+
+            if(index === 1) {
+                // Dive into planet
+                gsap.to(camera.position, {
+                    z: -180,
+                    x: 0,
+                    y: 0,
+                    duration: 2.5,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        initChapter1();
+                    }
+                });
+                gsap.to(planet.scale, { x: 10, y: 10, z: 10, duration: 2.5 });
+                gsap.to(planet.material, { opacity: 0, duration: 1, delay: 1 });
+                gsap.to(atmosphere.material, { opacity: 0, duration: 1, delay: 1 });
+            } else if(index === 2) {
+                // Move to projects district
+                gsap.to(camera.position, {
+                    x: 0, y: 100, z: -1000,
+                    duration: 2,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        if(projectGroups.length === 0) initChapter2();
+                    }
+                });
+            } else if(index === 3) {
+                // Move to hire me pad
+                gsap.to(camera.position, {
+                    x: 1000, y: 50, z: -2500,
+                    duration: 2,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        if(!landingPad) initChapter3();
+                    }
+                });
+            }
+        }
+
+        // --- CONTACT FORM LOGIC ---
+        function initForm() {
+            document.getElementById('hire-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                const btn = document.getElementById('submit-btn');
+                const status = document.getElementById('form-status');
+                const name = document.getElementById('form-name').value;
+                const email = document.getElementById('form-email').value;
+                const message = document.getElementById('form-message').value;
 
-                const target = document.querySelector(href);
-                if (target) {
-                    // Smooth scroll to target
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                btn.disabled = true;
+                btn.textContent = "SENDING...";
+                status.textContent = "";
+
+                const formData = new FormData();
+                formData.append("access_key", "8ced933c-0914-46d5-aabc-a559e61de0b0");
+                formData.append("name", name);
+                formData.append("email", email);
+                formData.append("message", message);
+
+                try {
+                    const response = await fetch("https://api.web3forms.com/submit", {
+                        method: "POST",
+                        body: formData
                     });
+                    if (response.ok) {
+                        status.textContent = "TRANSMISSION SUCCESSFUL";
+                        status.style.color = "#00f5ff";
+                        document.getElementById('hire-form').reset();
+                    } else {
+                        status.textContent = "TRANSMISSION FAILED";
+                        status.style.color = "#ff0055";
+                    }
+                } catch (err) {
+                    status.textContent = "SYSTEM ERROR";
+                    status.style.color = "#ff0055";
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = "SUBMIT TRANSMISSION";
+                }
+            });
+        }
 
-                    // Update URL without page reload
-                    history.pushState(null, null, href);
+        // --- CHAPTER 3: HIRE ME ---
+        function initChapter3() {
+            initForm();
+            // Landing Pad
+            const padGeo = new THREE.RingGeometry(50, 60, 64);
+            const padMat = new THREE.MeshBasicMaterial({ color: 0x00f5ff, side: THREE.DoubleSide, transparent: true, opacity: 0.5 });
+            landingPad = new THREE.Mesh(padGeo, padMat);
+            landingPad.rotation.x = Math.PI / 2;
+            landingPad.position.set(1000, -50, -2800);
+            scene.add(landingPad);
+
+            // Pulse effect
+            gsap.to(landingPad.scale, { x: 1.2, y: 1.2, duration: 1, repeat: -1, yoyo: true });
+
+            // Robot Guards
+            for(let i=0; i<6; i++) {
+                const angle = (i / 6) * Math.PI * 2;
+                const radius = 80;
+                const guard = new THREE.Group();
+                const body = new THREE.Mesh(new THREE.BoxGeometry(4, 8, 2), new THREE.MeshBasicMaterial({color: 0x020210}));
+                const head = new THREE.Mesh(new THREE.SphereGeometry(2), new THREE.MeshBasicMaterial({color: 0x020210}));
+                head.position.y = 5;
+                guard.add(body, head);
+                guard.position.set(Math.cos(angle)*radius + 1000, -42, Math.sin(angle)*radius - 2800);
+                scene.add(guard);
+                guardSilhouettes.push(guard);
+            }
+        }
+
+        // --- CHAPTER 1: ABOUT & CITY ---
+        class HolographicPanel {
+            constructor(title, text, position) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 1024;
+                canvas.height = 512;
+                const ctx = canvas.getContext('2d');
+
+                // Border/Background
+                ctx.fillStyle = 'rgba(0, 245, 255, 0.05)';
+                ctx.fillRect(0, 0, 1024, 512);
+                ctx.strokeStyle = '#00f5ff';
+                ctx.lineWidth = 10;
+                ctx.strokeRect(0, 0, 1024, 512);
+
+                // Text
+                ctx.fillStyle = '#00f5ff';
+                ctx.font = 'bold 60px "Space Mono"';
+                ctx.fillText(title.toUpperCase(), 50, 100);
+
+                ctx.fillStyle = '#e8e8ff';
+                ctx.font = '32px "Space Mono"';
+                this.wrapText(ctx, text, 50, 180, 924, 45);
+
+                const texture = new THREE.CanvasTexture(canvas);
+                const geometry = new THREE.PlaneGeometry(100, 50);
+                const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: 0, side: THREE.DoubleSide });
+                this.mesh = new THREE.Mesh(geometry, material);
+                this.mesh.position.copy(position);
+                scene.add(this.mesh);
+
+                gsap.to(material, { opacity: 0.9, duration: 2 });
+            }
+
+            wrapText(context, text, x, y, maxWidth, lineHeight) {
+                const words = text.split(' ');
+                let line = '';
+                for (let n = 0; n < words.length; n++) {
+                    let testLine = line + words[n] + ' ';
+                    let metrics = context.measureText(testLine);
+                    let testWidth = metrics.width;
+                    if (testWidth > maxWidth && n > 0) {
+                        context.fillText(line, x, y);
+                        line = words[n] + ' ';
+                        y += lineHeight;
+                    } else {
+                        line = testLine;
+                    }
+                }
+                context.fillText(line, x, y);
+            }
+        }
+
+        // --- CHAPTER 2: PROJECTS ---
+        function initChapter2() {
+            const categories = ["woo", "corporate", "nonprofit", "staging"];
+            categories.forEach((cat, index) => {
+                const group = new THREE.Group();
+                const platformGeo = new THREE.BoxGeometry(200, 5, 200);
+                const platformMat = new THREE.MeshBasicMaterial({ color: 0x00f5ff, wireframe: true, transparent: true, opacity: 0.2 });
+                const platform = new THREE.Mesh(platformGeo, platformMat);
+                group.add(platform);
+
+                // Category Title
+                const canvas = document.createElement('canvas');
+                canvas.width = 512; canvas.height = 128;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#00f5ff';
+                ctx.font = 'bold 48px "Space Mono"';
+                ctx.textAlign = 'center';
+                ctx.fillText(cat.toUpperCase() + " DISTRICT", 256, 80);
+                const tex = new THREE.CanvasTexture(canvas);
+                const title = new THREE.Mesh(new THREE.PlaneGeometry(100, 25), new THREE.MeshBasicMaterial({map: tex, transparent: true}));
+                title.position.y = 50;
+                group.add(title);
+
+                // Project Cards
+                const catProjects = personalData.projects.filter(p => p.tags.includes(cat));
+                catProjects.forEach((p, pi) => {
+                    const card = createProjectCard(p);
+                    const row = Math.floor(pi / 4);
+                    const col = pi % 4;
+                    card.position.set((col - 1.5) * 50, 20, (row - 1) * 50);
+                    group.add(card);
+                });
+
+                group.position.set(index * 400, 0, -1500);
+                scene.add(group);
+                projectGroups.push(group);
+            });
+
+            document.getElementById('next-btn').addEventListener('click', () => switchDistrict(1));
+            document.getElementById('prev-btn').addEventListener('click', () => switchDistrict(-1));
+
+            window.addEventListener('click', onProjectClick);
+        }
+
+        function createProjectCard(project) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256; canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'rgba(0, 245, 255, 0.1)';
+            ctx.fillRect(0, 0, 256, 256);
+            ctx.strokeStyle = '#00f5ff';
+            ctx.lineWidth = 5;
+            ctx.strokeRect(0, 0, 256, 256);
+
+            ctx.fillStyle = '#00f5ff';
+            ctx.font = 'bold 24px "Space Mono"';
+            ctx.textAlign = 'center';
+            ctx.fillText(project.n.substring(0, 20), 128, 128);
+
+            const tex = new THREE.CanvasTexture(canvas);
+            const card = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshBasicMaterial({map: tex, transparent: true, side: THREE.DoubleSide}));
+            card.userData = { url: "https://" + project.u };
+            return card;
+        }
+
+        function switchDistrict(dir) {
+            currentDistrict = (currentDistrict + dir + projectGroups.length) % projectGroups.length;
+            gsap.to(camera.position, {
+                x: currentDistrict * 400,
+                duration: 1.5,
+                ease: "power2.inOut"
+            });
+        }
+
+        function onProjectClick(event) {
+            if(currentChapter !== 2) return;
+            raycaster.setFromCamera(targetMouse, camera);
+            const intersects = raycaster.intersectObjects(scene.children, true);
+            const card = intersects.find(i => i.object.userData.url);
+            if(card) {
+                gsap.to(card.object.scale, { x: 1.2, y: 1.2, duration: 0.3, yoyo: true, repeat: 1 });
+                setTimeout(() => window.open(card.object.userData.url, '_blank'), 600);
+            }
+        }
+
+        function initChapter1() {
+            // City Hub
+            cityHub = new THREE.Group();
+            const gridHelper = new THREE.GridHelper(1000, 50, 0x00f5ff, 0x00f5ff);
+            gridHelper.position.y = -100;
+            gridHelper.material.transparent = true;
+            gridHelper.material.opacity = 0.2;
+            cityHub.add(gridHelper);
+
+            // Floating structures
+            for(let i=0; i<50; i++) {
+                const h = Math.random() * 200 + 50;
+                const geo = new THREE.BoxGeometry(20, h, 20);
+                const mat = new THREE.MeshBasicMaterial({ color: 0x00f5ff, wireframe: true, transparent: true, opacity: 0.1 });
+                const building = new THREE.Mesh(geo, mat);
+                building.position.set((Math.random()-0.5)*1000, h/2 - 100, (Math.random()-0.5)*1000);
+                cityHub.add(building);
+            }
+            scene.add(cityHub);
+
+            // About Panels
+            holographicPanels.push(new HolographicPanel("About Maliq", personalData.bio, new THREE.Vector3(-60, 20, -300)));
+
+            // Skills Neural Net
+            neuralNet = new THREE.Group();
+            const nodes = [];
+            personalData.skills.forEach((skill, i) => {
+                const angle = (i / personalData.skills.length) * Math.PI * 2;
+                const radius = 60;
+                const x = Math.cos(angle) * radius + 80;
+                const y = Math.sin(angle) * radius + 20;
+                const z = -300;
+
+                const hexGeo = new THREE.CircleGeometry(8, 6);
+                const hexMat = new THREE.MeshBasicMaterial({ color: 0x00f5ff, wireframe: true, transparent: true, opacity: 0.8 });
+                const hex = new THREE.Mesh(hexGeo, hexMat);
+                hex.position.set(x, y, z);
+                nodes.push(new THREE.Vector3(x, y, z));
+
+                // Skill Text
+                const canvas = document.createElement('canvas');
+                canvas.width = 256; canvas.height = 64;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#00f5ff';
+                ctx.font = '24px "Space Mono"';
+                ctx.textAlign = 'center';
+                ctx.fillText(skill.name, 128, 40);
+                const txtTex = new THREE.CanvasTexture(canvas);
+                const txtGeo = new THREE.PlaneGeometry(20, 5);
+                const txtMat = new THREE.MeshBasicMaterial({ map: txtTex, transparent: true });
+                const txtMesh = new THREE.Mesh(txtGeo, txtMat);
+                txtMesh.position.set(x, y - 12, z);
+
+                neuralNet.add(hex, txtMesh);
+            });
+
+            // Neural connections
+            const lineGeo = new THREE.BufferGeometry();
+            const linePoints = [];
+            for(let i=0; i<nodes.length; i++) {
+                for(let j=i+1; j<nodes.length; j++) {
+                    linePoints.push(nodes[i].x, nodes[i].y, nodes[i].z);
+                    linePoints.push(nodes[j].x, nodes[j].y, nodes[j].z);
                 }
             }
-        });
-    });
+            lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePoints, 3));
+            const lineMat = new THREE.LineBasicMaterial({ color: 0x00f5ff, transparent: true, opacity: 0.2 });
+            const lines = new THREE.LineSegments(lineGeo, lineMat);
+            neuralNet.add(lines);
 
-    // Handle middle-click specifically to prevent new window
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('auxclick', function(e) {
-            // Middle button is button 1 (0=left, 1=middle, 2=right)
-            if (e.button === 1) {
-                e.preventDefault();
-                e.stopPropagation();
+            scene.add(neuralNet);
 
-                const href = this.getAttribute('href');
-                const target = document.querySelector(href);
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    history.pushState(null, null, href);
-                }
-                return false;
+            // Transition Camera to view panels
+            gsap.to(camera.position, { z: -200, duration: 2, ease: "power2.out" });
+        }
+
+        initCore();
+        initIntro();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            mouse.x += (targetMouse.x - mouse.x) * 0.05;
+            mouse.y += (targetMouse.y - mouse.y) * 0.05;
+
+            if(currentChapter === 0) {
+                camera.position.x += (mouse.x * 20 - camera.position.x) * 0.01;
+                camera.position.y += (-mouse.y * 20 - camera.position.y) * 0.01;
+                camera.lookAt(planet.position);
+                planet.rotation.y += 0.001;
+                starfield.rotation.y += 0.0002;
+                robots.forEach(r => {
+                    r.mesh.position.z += r.speed;
+                    if(r.mesh.position.z > 500) r.mesh.position.z = -500;
+                });
+            } else if(currentChapter === 1) {
+                camera.position.x += (mouse.x * 50 - camera.position.x) * 0.01;
+                camera.position.y += (-mouse.y * 50 - camera.position.y) * 0.01;
+                camera.lookAt(0, 0, -500);
+            } else if(currentChapter === 2) {
+                camera.position.y += (-mouse.y * 30 + 100 - camera.position.y) * 0.05;
+            } else if(currentChapter === 3) {
+                camera.lookAt(1000, 0, -2800);
             }
-        });
-    });
-})();
 
-// Scroll progress bar
-window.addEventListener('scroll', () => {
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (scrollTop / scrollHeight) * 100;
-    document.getElementById('progress-bar').style.width = scrolled + '%';
-});
-
-// Mouse spotlight effect (desktop only)
-if (!isTouchDevice) {
-    const spotlight = document.getElementById('spotlight');
-    let spotlightX = 0, spotlightY = 0;
-    let currentX = 0, currentY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-        spotlightX = e.clientX;
-        spotlightY = e.clientY;
-    });
-
-    function animateSpotlight() {
-        currentX += (spotlightX - currentX) * 0.1;
-        currentY += (spotlightY - currentY) * 0.1;
-        spotlight.style.left = currentX + 'px';
-        spotlight.style.top = currentY + 'px';
-        requestAnimationFrame(animateSpotlight);
-    }
-    animateSpotlight();
-}
-
-</script>
-
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
 </body>
 </html>
